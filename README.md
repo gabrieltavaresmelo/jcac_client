@@ -12,7 +12,7 @@ Implementação no lado [Cliente] utilização websockets e o protocolo JSON.
 
 
 
-![ScreenShot](https://github.com/gabrieltavaresmelo/jcac_server/raw/master/gui.png)
+![ScreenShot](https://github.com/gabrieltavaresmelo/jcac_client/raw/master/gui.png)
 
 
 
@@ -39,7 +39,7 @@ Instalação e Dependências:
     mvn clean jfx:jar
     
     # Obs.: o arquivo gerado estará em:
-    # java -jar ${DIR_APP}/target/jfx/app/jcac_server-jfx.jar
+    # java -jar ${DIR_APP}/target/jfx/app/jcac_client-jfx.jar
     
 	
 5) Distribuir sua aplicação (Modo nativo):
