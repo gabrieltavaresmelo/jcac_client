@@ -42,7 +42,7 @@ Instalação e Dependências:
     # java -jar ${DIR_APP}/target/jfx/app/jcac_client-jfx.jar
     
 	
-5) Distribuir sua aplicação (Modo nativo):
+5) Distribuir sua aplicação (Modo Nativo):
 
     mvn clean jfx:native
 	
