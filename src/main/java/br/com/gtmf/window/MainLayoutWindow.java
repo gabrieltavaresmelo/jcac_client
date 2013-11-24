@@ -244,6 +244,10 @@ public class MainLayoutWindow implements ListenerWindow {
 		lbQuestionMine.setVisible(isVisible);
 		tfSendQuestion.setVisible(isVisible);
 		btSendQuestion.setVisible(isVisible);
+		
+		lbQuestionEnemy.setVisible(isVisible);
+		lbAnswer.setVisible(isVisible);
+		lbAnswerValue.setVisible(isVisible);
 	}
 	
 	private void statusFieldsAnswer(boolean isDisable){
@@ -612,9 +616,9 @@ public class MainLayoutWindow implements ListenerWindow {
 				tfSendChat.setVisible(isLock);
 				btSendChat.setVisible(isLock);
 				
-				lbQuestionEnemy.setVisible(isLock);
-				lbAnswer.setVisible(isLock);
-				lbAnswerValue.setVisible(isLock);
+//				lbQuestionEnemy.setVisible(isLock);
+//				lbAnswer.setVisible(isLock);
+//				lbAnswerValue.setVisible(isLock);
 	        }
 		});	
 	}

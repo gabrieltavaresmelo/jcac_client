@@ -33,7 +33,7 @@ public class MainApp extends Application {
 
     public void start(Stage stage) throws Exception {    	
     	// Configura o titulo da janela
-    	stage.setTitle("[Cliente] Jogo Cara-a-cara");
+    	stage.setTitle("[Cliente WebSocket] Jogo Cara-a-cara");
 		
 		// Configura o evento ao clicar no botao fechar da janela
     	stage.setOnCloseRequest(new EventHandler<WindowEvent>() {			
