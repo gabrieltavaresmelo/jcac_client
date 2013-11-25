@@ -118,11 +118,41 @@ public class MainLayoutWindow implements ListenerWindow {
 						boolean isImgViewNotSelected = imgsSelected[i];
 						
 						// Checa se o mouse clicou sobre uma das imagens-face
-			        	if(t.getTarget().equals(tmp) && !isImgViewNotSelected){
+			        	if(t.getTarget().equals(tmp)){
 //				            System.out.println("clicado na imagem: " + tmp.getId());
-			        		imgsSelected[i] = true;			        		
-							tmp.setImage(ImageUtils.makeTranslucentImage(
-									tmp.getImage(), 0.60f));
+			        		if(!isImgViewNotSelected){
+				        		imgsSelected[i] = true;			        		
+								tmp.setImage(ImageUtils.makeTranslucentImage(
+										tmp.getImage(), 0.60f));
+			        		} else{
+			        			imgsSelected[i] = false;
+								tmp.setImage(new Image(getClass()
+										.getResourceAsStream(
+												Constants.DIR_FACES
+														+ tmp.getId() + ".png")));
+			        		}
+			        		
+			        		
+			        		int qtdImgsSelected = 0;
+			        		String person = null;
+			        		
+			        		for (int j = 0; j < imgsSelected.length; j++) {
+			        			boolean isImgViewSelected = imgsSelected[j];
+			        			
+								if(isImgViewSelected){
+									qtdImgsSelected++;
+								} else{
+									ImageView imgNotSelected = imgs[j];
+				        			
+									// Obtem o nome da pessoa de acordo com o ImageView (atraves do Mapeamento)
+				        			person = Constants.PERSONS.get(imgNotSelected.getId().substring(3));									
+								}
+							}
+			        		
+			        		if(qtdImgsSelected >= imgsSelected.length-1 && person != null){
+			        			System.out.println(person);
+			        			sendMessage(Bundle.RIDDLE_PERSONA_SEND, person);
+			        		}
 			        	}
 					}
 	        	}
@@ -330,8 +360,22 @@ public class MainLayoutWindow implements ListenerWindow {
 	@FXML
 	public void sendChat() {
 		String textToSend = tfSendChat.getText();
-		tfSendChat.setText("");		
-		sendMessage(Bundle.CHAT_MSG_SEND,  tfUsername.getText() + ": " + textToSend);
+		
+		if(!textToSend.trim().equals("")){
+			tfSendChat.setText("");		
+			sendMessage(Bundle.CHAT_MSG_SEND,  tfUsername.getText() + ": " + textToSend);
+		}
+	}
+	
+	@FXML
+	public void sendQuestion() {
+		String textToSend = tfSendQuestion.getText();
+		
+		if(!textToSend.trim().equals("")){
+			tfSendQuestion.setText("");
+			sendMessage(Bundle.QUESTION_SEND, textToSend);
+			disableFieldsQuestion();
+		}
 	}
 	
 	@FXML
@@ -341,15 +385,6 @@ public class MainLayoutWindow implements ListenerWindow {
 		
 		disableFieldsAnswer();
 		enableFieldsQuestion();
-	}
-	
-	@FXML
-	public void sendQuestion() {
-		String textToSend = tfSendQuestion.getText();
-		tfSendQuestion.setText("");
-		
-		sendMessage(Bundle.QUESTION_SEND, textToSend);
-		disableFieldsQuestion();
 	}
 	
 	@FXML
@@ -401,22 +436,25 @@ public class MainLayoutWindow implements ListenerWindow {
 	public void turnOn(){
 		tbStatus.setText("Desconectar");
 
+		String port = "9009";
+		
 		try {
 			String username = tfUsername.getText();
 			String ipPort = tfIpServer.getText();
 			String [] split = ipPort.split(":");
 			
 			String ipServer = split[0];
-			String port = split[1];
+			port = split[1];
 			
 			ClientController.getInstance().setListener(this);
-			ClientController.getInstance().connect(ipServer, Integer.parseInt(port), username );
+			ClientController.getInstance().connect(ipServer, Integer.parseInt(port), username);
 						
 			if(!tbStatus.isSelected()){
 				tbStatus.setSelected(true);
 			}
 			
 		} catch (Exception e) {
+			LOG.error(e.getMessage(), e);
 			LOG.error("[Erro] Insira IP:PORTA do servidor! Ex.: 192.168.0.12:9009");
 			tbStatus.setSelected(false);
 			turnOff();
@@ -457,9 +495,7 @@ public class MainLayoutWindow implements ListenerWindow {
 		});
 	}
 
-	/**
-	 * 
-	 */
+
 	@Override
 	public void receive(final Bundle message) {
 		// Para enviar dados de outra thread para a GUI deve-se usar o Platform
@@ -492,14 +528,37 @@ public class MainLayoutWindow implements ListenerWindow {
 							
 							ClientController.getInstance().setUsername(tfUsername.getText());							
 							
+							handleStartGame();
+							
 							break;
 					
 						case Bundle.USER_OUT:
 							
+							// Desabilita os campos
+					        stopGame();
+					        
+							turnOff();
+							setConnected(false);
+					        setLockToConnectUI(false);
+							tbStatus.setSelected(false);
+							
 							FXOptionPane.showMessageDialog(stage, "O adversário saiu do jogo!",
 									"Jogo Encerrado", "OK");
 							
-							stopGame();
+							break;
+					
+						case Bundle.SERVER_OUT:
+							
+							// Desabilita os campos
+					        setLockToConnectUI(false);
+					        stopGame();
+							
+					        tbStatus.setSelected(false);
+					        ClientController.getInstance().setConnected(false);
+							turnOff();
+							
+							FXOptionPane.showMessageDialog(stage, "Servidor indisponível!",
+									"Jogo Encerrado", "OK");
 							
 							break;
 							
@@ -630,7 +689,22 @@ public class MainLayoutWindow implements ListenerWindow {
 
 	@Override
 	public void error(Exception ex) {
-		LOG.error(ex.getMessage(), ex);
+		LOG.error(ex.getMessage());
+		
+		// Para enviar dados de outra thread para a GUI deve-se usar o Platform
+		Platform.runLater(new Runnable() {
+	        @Override
+	        public void run() {	
+				turnOff();
+				setConnected(false);
+				setLockToConnectUI(false);
+				tbStatus.setSelected(false);
+				
+				FXOptionPane.showMessageDialog(stage, 
+						"Servidor indisponível na porta especificada!",
+						"Servidor OFFLINE", "OK");
+					        }
+		});	
 	}
 
 	
@@ -658,7 +732,7 @@ public class MainLayoutWindow implements ListenerWindow {
 	}
 	
 	private void sendMessage(String head, String textToSend) {		
-		try {
+		try {			
 			Bundle bundle = new Bundle(head, textToSend);
 			sendMessage(bundle);
 			

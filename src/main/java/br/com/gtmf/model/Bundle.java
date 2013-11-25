@@ -27,6 +27,7 @@ public class Bundle {
 	 */
 	public static final String USER_IN = 					"UIN"; // Envia "eu" (recem-login) para o servidor
 	public static final String USER_OUT = 					"UOU"; // Envia "eu" (recem-logout) para o servidor
+	public static final String SERVER_OUT = 				"SOU"; // Envia para todos os clientes que o servidor esta OFF
 	public static final String LIST_USERS_ON = 				"LUO"; // Recebe a lista dos usuarios logados
 	public static final String QUESTION_RECEIVE = 			"QRC"; // Recebe a pergunta do adversario (Ex.: Tem barba?)
 	public static final String QUESTION_SEND = 				"QSN"; // Envia a pergunta para o adversario (Ex.: Tem barba?)
@@ -43,13 +44,14 @@ public class Bundle {
 	
 	// Variaveis
 	private String head; // cabecalho da mensagem
-	
+		
 	private String user = null;
 	private Map<String, String> usersOn = null; // nome, cor
 	private String question = null;
 	private String answer = null;
 	private String chatMsg = null;
 	private String persona = null;
+	private String exit = null;
 	
 	public Bundle(String head, String body) throws Exception{
 		this.head = head;
@@ -65,6 +67,10 @@ public class Bundle {
 				
 			case USER_OUT:							
 				user = body;
+				break;
+				
+			case SERVER_OUT:
+				exit = body;
 				break;
 				
 			case QUESTION_RECEIVE:						
@@ -158,6 +164,15 @@ public class Bundle {
 							body = jParser.getText();							
 							user = body;
 							
+							break;
+							
+						case USER_OUT:
+							break;
+							
+						case SERVER_OUT:
+							jParser.nextToken();
+							body = jParser.getText();							
+							exit = body;
 							break;
 							
 						case LIST_USERS_ON:
@@ -327,6 +342,14 @@ public class Bundle {
 	public void setPersona(String persona) {
 		this.persona = persona;
 	}
+	
+	public String getExit() {
+		return exit;
+	}
+	
+	public void setExit(String exit) {
+		this.exit = exit;
+	}
 
 	public String toJson() throws Exception {
 
@@ -341,6 +364,10 @@ public class Bundle {
 		if(getUser() != null){
 			jGenerator.writeStringField("head", head); // "head" : "UIN"
 			jGenerator.writeStringField("body", getUser()); // "body" : "fulano"
+			
+		} if(getExit() != null){
+			jGenerator.writeStringField("head", head);
+			jGenerator.writeStringField("body", getExit());
 			
 		} if(getUsersOn() != null){
 			jGenerator.writeStringField("head", head); 						 

@@ -178,4 +178,12 @@ public class ClientController {
 	public String getIpServer() {
 		return ipserver;
 	}
+	
+	public void setConnected(boolean isConnected) {
+		this.isConnected = isConnected;
+	}
+	
+	public boolean isConnected() {
+		return isConnected;
+	}
 }

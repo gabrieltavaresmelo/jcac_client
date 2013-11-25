@@ -33,7 +33,7 @@
 				<Menu mnemonicParsing="false" text="Arquivo" >
 					<items>
 						<MenuItem mnemonicParsing="false" onAction="#handleStartGame"
-							text="Iniciar Jogo" fx:id="mniStartGame" >
+							text="Novo Jogo" fx:id="mniStartGame" >
 							<accelerator>
 								<KeyCodeCombination alt="UP" code="N" control="ANY"
 									meta="UP" shift="UP" shortcut="UP" />

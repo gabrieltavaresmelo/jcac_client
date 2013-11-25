@@ -21,31 +21,30 @@ public class Constants {
 	
 	
 	// -- Faces utlizadas no Jogo
-	public static final String face01 = DIR_FACES + "man01.png";
-	public static final String face02 = DIR_FACES + "man02.png";
-	public static final String face03 = DIR_FACES + "man03.png";
-	public static final String face04 = DIR_FACES + "man04.png";
-	public static final String face05 = DIR_FACES + "man05.png";
-	public static final String face06 = DIR_FACES + "man06.png";
-	public static final String face07 = DIR_FACES + "man07.png";
-	public static final String face08 = DIR_FACES + "man08.png";
-	public static final String face09 = DIR_FACES + "man09.png";
-	public static final String face10 = DIR_FACES + "man10.png";
-	public static final String face11 = DIR_FACES + "man11.png";
-	public static final String face12 = DIR_FACES + "man12.png";
-	
-	public static final String face13 = DIR_FACES + "woman01.png";
-	public static final String face14 = DIR_FACES + "woman02.png";
-	public static final String face15 = DIR_FACES + "woman03.png";
-	public static final String face16 = DIR_FACES + "woman04.png";
-	public static final String face17 = DIR_FACES + "woman05.png";
-	public static final String face18 = DIR_FACES + "woman06.png";
-	public static final String face19 = DIR_FACES + "woman07.png";
-	public static final String face20 = DIR_FACES + "woman08.png";
-	public static final String face21 = DIR_FACES + "woman09.png";
-	public static final String face22 = DIR_FACES + "woman10.png";
-	public static final String face23 = DIR_FACES + "woman11.png";
-	public static final String face24 = DIR_FACES + "woman12.png";
+	public static final String face01 = DIR_FACES + "img01.png";
+	public static final String face02 = DIR_FACES + "img02.png";
+	public static final String face03 = DIR_FACES + "img03.png";
+	public static final String face04 = DIR_FACES + "img04.png";
+	public static final String face05 = DIR_FACES + "img05.png";
+	public static final String face06 = DIR_FACES + "img06.png";
+	public static final String face07 = DIR_FACES + "img07.png";
+	public static final String face08 = DIR_FACES + "img08.png";
+	public static final String face09 = DIR_FACES + "img09.png";
+	public static final String face10 = DIR_FACES + "img10.png";
+	public static final String face11 = DIR_FACES + "img11.png";
+	public static final String face12 = DIR_FACES + "img12.png";	
+	public static final String face13 = DIR_FACES + "img13.png";
+	public static final String face14 = DIR_FACES + "img14.png";
+	public static final String face15 = DIR_FACES + "img15.png";
+	public static final String face16 = DIR_FACES + "img16.png";
+	public static final String face17 = DIR_FACES + "img17.png";
+	public static final String face18 = DIR_FACES + "img18.png";
+	public static final String face19 = DIR_FACES + "img19.png";
+	public static final String face20 = DIR_FACES + "img20.png";
+	public static final String face21 = DIR_FACES + "img21.png";
+	public static final String face22 = DIR_FACES + "img22.png";
+	public static final String face23 = DIR_FACES + "img23.png";
+	public static final String face24 = DIR_FACES + "img24.png";
 	
 	
 	public static final String [] FACES = new String[] {
